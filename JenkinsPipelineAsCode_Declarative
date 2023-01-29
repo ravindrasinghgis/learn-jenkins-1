@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+    environment{
+        name = 'UserDefine Env Var value - Ravindra Singh Shekhawat'
+    }
+    parameters{
+        string(name: 'person', defaultValue: 'Ravindra', description: "Provide the person name")
+        booleanParam(name: 'isMale', defaultValue: true, description: "")
+        choice(name: 'city', choices: ['Jaipur', 'Jodhpur', 'Udaipur'], description: "")
+    }
+    stages {
+        stage('Stage-1') {
+            steps {
+                bat '''
+                echo "Ravindra"
+                echo "From Stage-1"
+                
+                '''
+            }
+        }
+        stage('Stage-2-Access SystemDefined Enviornment Variable') {
+            steps {
+                bat '''
+                    echo "Build Id = %BUILD_ID%"
+                    echo "Job Name = %JOB_NAME%"
+                    echo "Parameter [person] = %person% "
+                    echo "Parameter [isMale] = %isMale% "  
+                    echo "Parameter [city] = %city% "  
+                '''
+            }
+        }
+        stage('Stage-3-Access Project/System defined Environment variable') {
+            steps {
+                bat '''
+                    echo "User Defined Env variable = %name%"
+                '''
+                echo "individual execution line"
+            }
+        }
+    }
+}
